@@ -1,0 +1,396 @@
+{
+  "modules": {
+    "perception": {
+      "description": "Apollo感知模块打点详情",
+      "total_components": 21,
+      "components": [
+        {
+          "name": "traffic_light_tracking_component.cc",
+          "module": "交通灯跟踪",
+          "class": "TrafficLightTrackComponent",
+          "function": "Proc()",
+          "traces": [
+            {"name": "perception.traffic_light_tracking.tick", "description": "数据到达时间点"},
+            {"name": "perception.traffic_light_tracking.proc", "description": "InternalProc()主处理逻辑"},
+            {"name": "perception.traffic_light_tracking.total", "description": "总延迟"}
+          ],
+          "internal_traces": [
+            {"name": "perception.traffic_light_tracking.track", "description": "tracker_->Track()跟踪逻辑"},
+            {"name": "perception.traffic_light_tracking.sync_v2x", "description": "SyncV2XTrafficLights() V2X同步"},
+            {"name": "perception.traffic_light_tracking.transform_output", "description": "TransformOutputMessage()输出转换"}
+          ]
+        },
+        {
+          "name": "traffic_light_region_proposal_component.cc",
+          "module": "交通灯区域提案",
+          "class": "TrafficLightsPerceptionComponent",
+          "function": "OnReceiveImage()",
+          "traces": [
+            {"name": "perception.traffic_light_region_proposal.tick", "description": "数据到达时间点"},
+            {"name": "perception.traffic_light_region_proposal.check_camera", "description": "CheckCameraImageStatus()相机状态检查"},
+            {"name": "perception.traffic_light_region_proposal.update_camera_selection", "description": "UpdateCameraSelection()相机选择更新"},
+            {"name": "perception.traffic_light_region_proposal.sync_info", "description": "preprocessor_->SyncInformation()信息同步"},
+            {"name": "perception.traffic_light_region_proposal.fill_image", "description": "data_provider->FillImageData()图像填充"},
+            {"name": "perception.traffic_light_region_proposal.timestamp_monitor", "description": "图像时间戳监控"},
+            {"name": "perception.traffic_light_region_proposal.verify_projection", "description": "VerifyLightsProjection()灯光投影验证"},
+            {"name": "perception.traffic_light_region_proposal.write", "description": "writer_->Write()消息发送"},
+            {"name": "perception.traffic_light_region_proposal.total", "description": "总延迟"}
+          ]
+        },
+        {
+          "name": "traffic_light_recognition_component.cc",
+          "module": "交通灯识别",
+          "class": "TrafficLightRecognComponent",
+          "function": "Proc()",
+          "traces": [
+            {"name": "perception.traffic_light_recognition.tick", "description": "数据到达时间点"},
+            {"name": "perception.traffic_light_recognition.proc", "description": "InternalProc()处理逻辑"},
+            {"name": "perception.traffic_light_recognition.write", "description": "writer_->Write()消息发送"},
+            {"name": "perception.traffic_light_recognition.total", "description": "总延迟"}
+          ]
+        },
+        {
+          "name": "traffic_light_detection_component.cc",
+          "module": "交通灯检测",
+          "class": "TrafficLightDetectComponent",
+          "function": "Proc()",
+          "traces": [
+            {"name": "perception.traffic_light_detection.tick", "description": "数据到达时间点"},
+            {"name": "perception.traffic_light_detection.proc", "description": "InternalProc()处理逻辑"},
+            {"name": "perception.traffic_light_detection.write", "description": "writer_->Write()消息发送"},
+            {"name": "perception.traffic_light_detection.total", "description": "总延迟"}
+          ]
+        },
+        {
+          "name": "lane_detection_component.cc",
+          "module": "车道线检测",
+          "class": "LaneDetectionComponent",
+          "function": "OnReceiveImage()",
+          "traces": [
+            {"name": "perception.lane_detection.tick", "description": "数据到达时间点"},
+            {"name": "perception.lane_detection.check_timestamp", "description": "检查时间戳是否过期"},
+            {"name": "perception.lane_detection.start_stats", "description": "起始延迟统计"},
+            {"name": "perception.lane_detection.internal_proc", "description": "InternalProc()内部处理"},
+            {"name": "perception.lane_detection.end_stats", "description": "结束延迟统计"},
+            {"name": "perception.lane_detection.total", "description": "总延迟"}
+          ],
+          "internal_traces": [
+            {"name": "perception.lane_detection.init_prefused_msg", "description": "初始化prefused消息"},
+            {"name": "perception.lane_detection.get_tf", "description": "获取坐标变换"},
+            {"name": "perception.lane_detection.fill_image", "description": "填充图像数据"},
+            {"name": "perception.lane_detection.perception", "description": "执行车道线检测"},
+            {"name": "perception.lane_detection.visualization", "description": "可视化处理"},
+            {"name": "perception.lane_detection.make_msg", "description": "生成输出消息"}
+          ]
+        },
+        {
+          "name": "radar_detection_component.cc",
+          "module": "雷达检测",
+          "class": "RadarDetectionComponent",
+          "function": "Proc()",
+          "traces": [
+            {"name": "perception.radar_detection.tick", "description": "数据到达时间点"},
+            {"name": "perception.radar_detection.proc", "description": "InternalProc()处理逻辑"},
+            {"name": "perception.radar_detection.write", "description": "writer_->Write()消息发送"},
+            {"name": "perception.radar_detection.total", "description": "总延迟"}
+          ],
+          "internal_traces": [
+            {"name": "perception.radar_detection.preprocessor", "description": "radar_preprocessor_->Preprocess()预处理"},
+            {"name": "perception.radar_detection.get_tf", "description": "获取坐标变换"},
+            {"name": "perception.radar_detection.get_car_speed", "description": "获取车速"},
+            {"name": "perception.radar_detection.get_roi", "description": "获取ROI"},
+            {"name": "perception.radar_detection.perception", "description": "radar_perception_->Perceive()感知"}
+          ]
+        },
+        {
+          "name": "radar4d_detection_component.cc",
+          "module": "4D雷达检测",
+          "class": "Radar4dDetectionComponent",
+          "function": "Proc()",
+          "traces": [
+            {"name": "perception.radar4d_detection.tick", "description": "数据到达时间点"},
+            {"name": "perception.radar4d_detection.proc", "description": "InternalProc()处理逻辑"},
+            {"name": "perception.radar4d_detection.write", "description": "writer_->Write()消息发送"},
+            {"name": "perception.radar4d_detection.total", "description": "总延迟"}
+          ],
+          "internal_traces": [
+            {"name": "perception.radar4d_detection.frame_init", "description": "帧初始化"},
+            {"name": "perception.radar4d_detection.get_tf", "description": "获取坐标变换"},
+            {"name": "perception.radar4d_detection.get_car_speed", "description": "获取车速"},
+            {"name": "perception.radar4d_detection.get_roi", "description": "获取ROI"},
+            {"name": "perception.radar4d_detection.preprocessor", "description": "预处理"},
+            {"name": "perception.radar4d_detection.perception", "description": "感知处理"}
+          ]
+        },
+        {
+          "name": "multi_sensor_fusion_component.cc",
+          "module": "多传感器融合",
+          "class": "MultiSensorFusionComponent",
+          "function": "Proc()",
+          "traces": [
+            {"name": "perception.multi_sensor_fusion.tick", "description": "数据到达时间点"},
+            {"name": "perception.multi_sensor_fusion.proc", "description": "InternalProc()处理逻辑"},
+            {"name": "perception.multi_sensor_fusion.write", "description": "writer_->Write()消息发送"},
+            {"name": "perception.multi_sensor_fusion.total", "description": "总延迟"}
+          ],
+          "internal_traces": [
+            {"name": "perception.multi_sensor_fusion.fusion_process", "description": "fusion_->Fuse()融合处理"},
+            {"name": "perception.multi_sensor_fusion.roi_check", "description": "ROI检查"},
+            {"name": "perception.multi_sensor_fusion.serialize", "description": "消息序列化"}
+          ]
+        },
+        {
+          "name": "motion_service_component.cc",
+          "module": "运动服务",
+          "class": "MotionServiceComponent",
+          "function": "OnReceiveImage()",
+          "traces": [
+            {"name": "perception.motion_service.image_tick", "description": "图像到达时间点"},
+            {"name": "perception.motion_service.receive_image", "description": "接收图像"}
+          ],
+          "additional_functions": [
+            {
+              "name": "OnLocalization()",
+              "traces": [
+                {"name": "perception.motion_service.localization_tick", "description": "定位到达时间点"},
+                {"name": "perception.motion_service.process_status", "description": "处理车辆状态"},
+                {"name": "perception.motion_service.add_motion", "description": "添加运动到缓冲区"},
+                {"name": "perception.motion_service.localization", "description": "定位处理总延迟"}
+              ]
+            },
+            {
+              "name": "PublishEvent()",
+              "traces": [
+                {"name": "perception.motion_service.publish_tick", "description": "发布事件时间点"},
+                {"name": "perception.motion_service.get_buffer", "description": "获取运动缓冲区"},
+                {"name": "perception.motion_service.write", "description": "转换并写入"},
+                {"name": "perception.motion_service.total", "description": "总延迟"}
+              ]
+            }
+          ]
+        },
+        {
+          "name": "lidar_tracking_component.cc",
+          "module": "激光雷达跟踪",
+          "class": "LidarTrackingComponent",
+          "function": "Proc()",
+          "traces": [
+            {"name": "perception.lidar_tracking.tick", "description": "数据到达时间点"},
+            {"name": "perception.lidar_tracking.proc", "description": "InternalProc()处理逻辑"},
+            {"name": "perception.lidar_tracking.write", "description": "writer_->Write()消息发送"},
+            {"name": "perception.lidar_tracking.total", "description": "总延迟"}
+          ],
+          "internal_traces": [
+            {"name": "perception.lidar_tracking.multi_target_tracker", "description": "multi_target_tracker_->Track()多目标跟踪"}
+          ]
+        },
+        {
+          "name": "camera_tracking_component.cc",
+          "module": "相机跟踪",
+          "class": "CameraTrackingComponent",
+          "function": "Proc()",
+          "traces": [
+            {"name": "perception.camera_tracking.tick", "description": "数据到达时间点"},
+            {"name": "perception.camera_tracking.proc", "description": "InternalProc()处理逻辑"},
+            {"name": "perception.camera_tracking.write", "description": "writer_->Write()消息发送"},
+            {"name": "perception.camera_tracking.total", "description": "总延迟"}
+          ],
+          "internal_traces": [
+            {"name": "perception.camera_tracking.copy_timestamp", "description": "时间戳复制"},
+            {"name": "perception.camera_tracking.create_frame", "description": "创建跟踪帧"},
+            {"name": "perception.camera_tracking.tracker", "description": "camera_obstacle_tracker_->Process()跟踪"},
+            {"name": "perception.camera_tracking.get_sensor_info", "description": "获取传感器信息"},
+            {"name": "perception.camera_tracking.build_output", "description": "构建输出消息"}
+          ]
+        },
+        {
+          "name": "lidar_detection_filter_component.cc",
+          "module": "激光雷达检测过滤",
+          "class": "LidarDetectionFilterComponent",
+          "function": "Proc()",
+          "traces": [
+            {"name": "perception.lidar_detection_filter.tick", "description": "数据到达时间点"},
+            {"name": "perception.lidar_detection_filter.proc", "description": "InternalProc()处理逻辑"},
+            {"name": "perception.lidar_detection_filter.write", "description": "writer_->Write()消息发送"},
+            {"name": "perception.lidar_detection_filter.total", "description": "总延迟"}
+          ],
+          "internal_traces": [
+            {"name": "perception.lidar_detection_filter.filter_bank", "description": "filter_bank_.Filter()过滤"}
+          ]
+        },
+        {
+          "name": "lidar_detection_component.cc",
+          "module": "激光雷达检测",
+          "class": "LidarDetectionComponent",
+          "function": "Proc()",
+          "traces": [
+            {"name": "perception.lidar_detection.tick", "description": "数据到达时间点"},
+            {"name": "perception.lidar_detection.proc", "description": "InternalProc()处理逻辑"},
+            {"name": "perception.lidar_detection.write", "description": "writer_->Write()消息发送"}
+          ],
+          "internal_traces": [
+            {"name": "perception.lidar_detection.detector", "description": "detector_->Detect()检测"},
+            {"name": "perception.lidar_detection.object_builder", "description": "builder_.Build()对象构建"}
+          ]
+        },
+        {
+          "name": "camera_location_refinement_component.cc",
+          "module": "相机定位优化",
+          "class": "CameraLocationRefinementComponent",
+          "function": "Proc()",
+          "traces": [
+            {"name": "perception.camera_location_refinement.tick", "description": "数据到达时间点"},
+            {"name": "perception.camera_location_refinement.postprocessor", "description": "后处理逻辑"},
+            {"name": "perception.camera_location_refinement.write", "description": "writer_->Write()消息发送"},
+            {"name": "perception.camera_location_refinement.total", "description": "总延迟"}
+          ]
+        },
+        {
+          "name": "lidar_output_component.cc",
+          "module": "激光雷达输出",
+          "class": "LidarOutputComponent",
+          "function": "Proc()",
+          "traces": [
+            {"name": "perception.lidar_output.tick", "description": "数据到达时间点"},
+            {"name": "perception.lidar_output.extract_objects", "description": "提取有效对象"},
+            {"name": "perception.lidar_output.serialize", "description": "MsgSerializer::SerializeMsg()序列化"},
+            {"name": "perception.lidar_output.write", "description": "writer_->Write()消息发送"},
+            {"name": "perception.lidar_output.total", "description": "总延迟"}
+          ]
+        },
+        {
+          "name": "camera_location_estimation_component.cc",
+          "module": "相机位置估计",
+          "class": "CameraLocationEstimationComponent",
+          "function": "Proc()",
+          "traces": [
+            {"name": "perception.camera_location_estimation.tick", "description": "数据到达时间点"},
+            {"name": "perception.camera_location_estimation.copy_message", "description": "复制消息"},
+            {"name": "perception.camera_location_estimation.transform", "description": "坐标变换"},
+            {"name": "perception.camera_location_estimation.write", "description": "writer_->Write()消息发送"},
+            {"name": "perception.camera_location_estimation.total", "description": "总延迟"}
+          ]
+        },
+        {
+          "name": "camera_detection_single_stage_component.cc",
+          "module": "单阶段相机检测",
+          "class": "CameraDetectionSingleStageComponent",
+          "function": "Proc()",
+          "traces": [
+            {"name": "perception.camera_detection_single_stage.tick", "description": "数据到达时间点"},
+            {"name": "perception.camera_detection_single_stage.proc", "description": "InternalProc()处理逻辑"},
+            {"name": "perception.camera_detection_single_stage.write", "description": "writer_->Write()消息发送"},
+            {"name": "perception.camera_detection_single_stage.total", "description": "总延迟"}
+          ],
+          "internal_traces": [
+            {"name": "perception.camera_detection_single_stage.fill_image", "description": "FillImageData()填充图像"},
+            {"name": "perception.camera_detection_single_stage.get_tf", "description": "trans_wrapper_->GetSensor2worldTrans()获取坐标变换"},
+            {"name": "perception.camera_detection_single_stage.detector", "description": "detector_->Detect()检测"}
+          ]
+        },
+        {
+          "name": "camera_detection_multi_stage_component.cc",
+          "module": "多阶段相机检测",
+          "class": "CameraDetectionMultiStageComponent",
+          "function": "Proc()",
+          "traces": [
+            {"name": "perception.camera_detection_multi_stage.tick", "description": "数据到达时间点"},
+            {"name": "perception.camera_detection_multi_stage.proc", "description": "InternalProc()处理逻辑"},
+            {"name": "perception.camera_detection_multi_stage.write", "description": "writer_->Write()消息发送"},
+            {"name": "perception.camera_detection_multi_stage.total", "description": "总延迟"}
+          ],
+          "internal_traces": [
+            {"name": "perception.camera_detection_multi_stage.fill_image", "description": "FillImageData()填充图像"},
+            {"name": "perception.camera_detection_multi_stage.get_tf", "description": "trans_wrapper_->GetSensor2worldTrans()获取坐标变换"},
+            {"name": "perception.camera_detection_multi_stage.detector", "description": "detector_->Detect()检测"}
+          ]
+        },
+        {
+          "name": "camera_detection_bev_component.cc",
+          "module": "BEV相机检测",
+          "class": "CameraDetectionBevComponent",
+          "function": "Proc()",
+          "traces": [
+            {"name": "perception.camera_detection_bev.tick", "description": "数据到达时间点"},
+            {"name": "perception.camera_detection_bev.receive_images", "description": "接收所有相机图像"},
+            {"name": "perception.camera_detection_bev.detect", "description": "detector_->Detect() BEV检测"},
+            {"name": "perception.camera_detection_bev.get_tf", "description": "获取坐标变换"},
+            {"name": "perception.camera_detection_bev.transform_to_world", "description": "CameraToWorldCoor()转换到世界坐标"},
+            {"name": "perception.camera_detection_bev.make_msg", "description": "MakeProtobufMsg()生成输出消息"},
+            {"name": "perception.camera_detection_bev.write", "description": "writer_->Write()消息发送"},
+            {"name": "perception.camera_detection_bev.total", "description": "总延迟"}
+          ]
+        },
+        {
+          "name": "pointcloud_preprocess_component.cc",
+          "module": "点云预处理",
+          "class": "PointCloudPreprocessComponent",
+          "function": "Proc()",
+          "traces": [
+            {"name": "perception.pointcloud_preprocess.tick", "description": "数据到达时间点"},
+            {"name": "perception.pointcloud_preprocess.proc", "description": "InternalProc()处理核心逻辑"},
+            {"name": "perception.pointcloud_preprocess.write", "description": "writer_->Write()消息发送"}
+          ],
+          "internal_traces": [
+            {"name": "perception.pointcloud_preprocess.msg_preprocess", "description": "消息前置处理"},
+            {"name": "perception.pointcloud_preprocess.msg_output_init", "description": "消息输出初始化"},
+            {"name": "perception.pointcloud_preprocess.frame_pool", "description": "帧池获取"},
+            {"name": "perception.pointcloud_preprocess.tf_lookup", "description": "TF查询"},
+            {"name": "perception.pointcloud_preprocess.extrinsics", "description": "外参获取"},
+            {"name": "perception.pointcloud_preprocess.cloud_preprocess", "description": "点云预处理"}
+          ]
+        },
+        {
+          "name": "pointcloud_map_based_roi_component.cc",
+          "module": "点云地图ROI",
+          "class": "PointCloudMapROIComponent",
+          "function": "Proc()",
+          "traces": [
+            {"name": "perception.pointcloud_map_based_roi.tick", "description": "数据到达时间点"},
+            {"name": "perception.pointcloud_map_based_roi.proc", "description": "InternalProc()处理逻辑"},
+            {"name": "perception.pointcloud_map_based_roi.write", "description": "writer_->Write()消息发送"},
+            {"name": "perception.pointcloud_map_based_roi.total", "description": "总延迟"}
+          ],
+          "internal_traces": [
+            {"name": "perception.pointcloud_map_based_roi.map_manager", "description": "map_manager_.Update()地图更新"},
+            {"name": "perception.pointcloud_map_based_roi.roi_filter", "description": "roi_filter_->Filter() ROI过滤"}
+          ]
+        },
+        {
+          "name": "pointcloud_ground_detection_component.cc",
+          "module": "点云地面检测",
+          "class": "PointCloudGroundDetectComponent",
+          "function": "Proc()",
+          "traces": [
+            {"name": "perception.pointcloud_ground_detection.tick", "description": "数据到达时间点"},
+            {"name": "perception.pointcloud_ground_detection.proc", "description": "InternalProc()处理逻辑"},
+            {"name": "perception.pointcloud_ground_detection.write", "description": "writer_->Write()消息发送"},
+            {"name": "perception.pointcloud_ground_detection.total", "description": "总延迟"}
+          ],
+          "internal_traces": [
+            {"name": "perception.pointcloud_ground_detection.ground_detector", "description": "ground_detector_->Detect()地面检测"}
+          ]
+        }
+      ]
+    }
+  },
+  "statistics": {
+    "total_components": 21,
+    "total_traces": 85,
+    "module_coverage": [
+      "交通灯(4)",
+      "车道线(1)",
+      "雷达(2)",
+      "多传感器融合(1)",
+      "运动服务(1)",
+      "激光雷达(6)",
+      "相机(5)",
+      "点云(3)"
+    ]
+  },
+  "notes": {
+    "打点规范": "每个组件的Proc函数或主处理函数都会包含tick、proc/total、write等基础打点",
+    "naming_pattern": "perception.{module_name}.{operation}",
+    "trace_id_source": "通常从消息的measurement_time或header中的timestamp获取"
+  }
+}
